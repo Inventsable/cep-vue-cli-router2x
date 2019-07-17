@@ -16,6 +16,6 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
-  color: var(--color-text-default);
+  color: var(--color-default);
 }
 </style>
