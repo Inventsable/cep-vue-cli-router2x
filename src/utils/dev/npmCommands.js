@@ -440,7 +440,23 @@ function stageExtensionFolder(extString) {
       try {
         fs.mkdirSync(`../${extString}-tmp`);
         tempdir.forEach(file => {
-          fse.copy(`./${file}`, `../${extString}-tmp/${file}`);
+          // fse.copy(`./${file}`, `../${extString}-tmp/${file}`);
+          // Thanks Adam Plouff
+          fse.copySync(`./${file}`, `../${extString}-tmp/${file}`);
+          if (file == "src") {
+            fs.readdir(`../${extString}-tmp/src/host`, (err, list) => {
+              list.forEach(hostApp => {
+                try {
+                  fse.remove(
+                    `../${extString}-tmp/src/host/${hostApp}/tsconfig.json`
+                  );
+                  fse.remove(`../${extString}-tmp/src/host/${hostApp}/host.ts`);
+                } catch (error) {
+                  console.log(error);
+                }
+              });
+            });
+          }
         });
         try {
           fs.mkdirSync(`./archive`);
